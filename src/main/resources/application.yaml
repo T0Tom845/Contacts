@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: default
+    active: init
 
 contactsFile:
   path: "resources/contacts.txt"

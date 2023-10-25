@@ -3,15 +3,15 @@ package totom.spring.contacts.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import totom.spring.contacts.ContactsContainer;
+import totom.spring.contacts.ContactsContainerInit;
 
-@Configuration
-@Profile("init")
 @ComponentScan("totom.spring.contacts")
+@Configuration
 @PropertySource("classpath:application.yaml")
+@Profile("init")
 public class InitAppConfig {
     @Bean
-    public ContactsContainer contactsContainer(@Value("${file.path}") String path){
-        return new ContactsContainer(path);
+    public ContactsContainer ContactsContainerInit(){
+        return new ContactsContainerInit();
     }
-
 }

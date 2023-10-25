@@ -15,5 +15,10 @@ public class Main {
 
         ContactsContainer cc = context.getBean(ContactsContainer.class);
         cc.printAll();
+        cc.addContact(new Contact("BillY Harrington", "232424", "defaultEmail.2332@mail.ru" ));
+        cc.addContact(new Contact("Van Darkholm", "657345344", "Aloha2@mail.ru" ));
+
+        cc.printAll();
+
     }
 }
