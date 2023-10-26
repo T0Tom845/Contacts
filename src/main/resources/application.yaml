@@ -1,6 +1,0 @@
-spring:
-  profiles:
-    active: init
-
-contactsFile:
-  path: "resources/contacts.txt"
