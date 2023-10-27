@@ -9,7 +9,7 @@ import java.util.Map;
 public interface ContactsContainer {
     Map<String, Contact> contacts = null;
     FileHandler fileHandler = null;
-
+    void inputNewContact();
     void printAllContacts();
     void addContact(Contact contact);
     void addContact(String contactStr);

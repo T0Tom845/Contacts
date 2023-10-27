@@ -6,4 +6,5 @@
 4) Методы для работы с ContactsContainer:
    1) printAllContacts() - выводит все хранящиеся контакты
    2) addContact(String|Contact contact) - добавляет контакт в хранилище, поддерживает ввод строкой и объектом контакта
-   3) deleteByEmail(String email) - удаляет контакт из хранилища по email, в случае если контакта с таким email нет, выводит сообщение
+   3) deleteByEmail(String email) - удаляет контакт из хранилища и из файла по email, в случае если контакта с таким email нет, выводит сообщение
+   4) inputNewContact() - консольный ввод нового формата

@@ -11,17 +11,19 @@ import java.util.stream.Stream;
 public class FileHandler {
 
     private File file;
-    public FileHandler(@Value("${file.path}") String path){
+
+    public FileHandler(@Value("${file.path}") String path) {
         String userDirectory = System.getProperty("user.dir");
         file = new File(userDirectory, "src/main/" + path);
     }
-    public List<String> getContacts(){
+
+    public List<String> getContacts() {
         List<String> contacts = new ArrayList<>();
 
         try {
             FileReader fileReader = new FileReader(file);
             Scanner scanner = new Scanner(fileReader);
-            while (scanner.hasNext()){
+            while (scanner.hasNext()) {
                 contacts.add(scanner.nextLine());
             }
             fileReader.close();
@@ -30,13 +32,14 @@ public class FileHandler {
         }
         return contacts;
     }
+
     //ToDo: переписать нормально со Stream
-    public boolean isFileContainsContact(Contact contact){
+    public boolean isFileContainsContact(Contact contact) {
         try {
             FileReader fileReader = new FileReader(file);
             Scanner scanner = new Scanner(fileReader);
-            while (scanner.hasNextLine()){
-                if (scanner.nextLine().equals(contact.toString())){
+            while (scanner.hasNextLine()) {
+                if (scanner.nextLine().equals(contact.toString())) {
                     return true;
                 }
             }
@@ -46,15 +49,61 @@ public class FileHandler {
         return false;
     }
 
-    public void addContact(Contact contact){
-        if (!isFileContainsContact(contact)){
+    public void addContact(Contact contact) {
+        if (!isFileContainsContact(contact)) {
             try {
-                FileWriter fileWriter = new FileWriter(file,true);
-                fileWriter.write("\n"+contact.toString());
+                FileWriter fileWriter = new FileWriter(file, true);
+                fileWriter.write("\n" + contact.toString());
                 fileWriter.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
+
+    public void deleteContact(Contact contact) {
+
+        String lineToRemove = contact.toString(); // строка, которую необходимо удалить
+
+        try {
+            File temp = new File(file.getParent() + "/temp.txt");
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
+
+            String currentLine;
+
+            while ((currentLine = reader.readLine()) != null) {// 1 переписываем все кроме удаляемого в темп
+                if (currentLine.equals(lineToRemove)) {
+                    continue; // пропускаем строку для удаления
+                }
+                writer.write(currentLine + System.getProperty("line.separator"));
+            }
+            writer.close();
+            reader.close();
+
+            BufferedReader reader1 = new BufferedReader(new FileReader(temp));
+            BufferedWriter writer1 = new BufferedWriter(new FileWriter(file));
+
+            while ((currentLine = reader1.readLine()) != null) {// 1 переписываем из темп в файл
+                if (currentLine.equals(lineToRemove)) {
+                    continue; // пропускаем строку для удаления
+                }
+                writer1.write(currentLine + System.getProperty("line.separator"));
+            }
+            writer1.close();
+            reader1.close();
+
+            try {
+                temp.delete();
+            }catch (SecurityException e){
+                e.printStackTrace();
+            }
+            System.out.println("Line " + contact.toString() + " deleted ");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
+

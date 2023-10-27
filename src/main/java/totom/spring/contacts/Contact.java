@@ -18,4 +18,7 @@ public class Contact {
     public String toString(){
         return fullName+";"+phoneNumber+";"+email;
     }
+    public void printContact(){
+        System.out.println(this.toString().replaceAll(";", " | "));
+    }
 }
