@@ -1,5 +1,6 @@
 package totom.spring.contacts;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -61,7 +62,7 @@ public class FileHandler {
         }
     }
 
-    public void deleteContact(Contact contact) {
+    public void deleteContact(@NotNull Contact contact) {
 
         String lineToRemove = contact.toString(); // строка, которую необходимо удалить
 
@@ -94,11 +95,8 @@ public class FileHandler {
             writer1.close();
             reader1.close();
 
-            try {
-                temp.delete();
-            }catch (SecurityException e){
-                e.printStackTrace();
-            }
+
+            temp.delete();
             System.out.println("Line " + contact.toString() + " deleted ");
         } catch (IOException e) {
             e.printStackTrace();
