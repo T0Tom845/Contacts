@@ -65,26 +65,23 @@ public class FileHandler {
     public void deleteContact(@NotNull Contact contact) {
 
         String lineToRemove = contact.toString(); // строка, которую необходимо удалить
+        File temp = new File(file.getParent() + "/temp.txt");
 
-        try {
-            File temp = new File(file.getParent() + "/temp.txt");
 
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
+        try( BufferedReader reader = new BufferedReader(new FileReader(file));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
+             BufferedReader reader1 = new BufferedReader(new FileReader(temp));
+             BufferedWriter writer1 = new BufferedWriter(new FileWriter(file))){
 
             String currentLine;
-
             while ((currentLine = reader.readLine()) != null) {// 1 переписываем все кроме удаляемого в темп
                 if (currentLine.equals(lineToRemove)) {
                     continue; // пропускаем строку для удаления
                 }
                 writer.write(currentLine + System.getProperty("line.separator"));
             }
-            writer.close();
-            reader.close();
 
-            BufferedReader reader1 = new BufferedReader(new FileReader(temp));
-            BufferedWriter writer1 = new BufferedWriter(new FileWriter(file));
+
 
             while ((currentLine = reader1.readLine()) != null) {// 1 переписываем из темп в файл
                 if (currentLine.equals(lineToRemove)) {
@@ -92,14 +89,12 @@ public class FileHandler {
                 }
                 writer1.write(currentLine + System.getProperty("line.separator"));
             }
-            writer1.close();
-            reader1.close();
 
 
             temp.delete();
             System.out.println("Line " + contact.toString() + " deleted ");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }
